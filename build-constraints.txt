@@ -1,0 +1,5 @@
+# Used with: uv pip install -b build-constraints.txt
+# OpenAI gym==0.21.0 is incompatible with recent setuptools' stricter
+# metadata validation in isolated builds (see openai/gym#3176, DLR-RM/sb3#1455).
+setuptools==65.5.0
+wheel==0.38.4
