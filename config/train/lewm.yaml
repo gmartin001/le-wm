@@ -4,6 +4,7 @@ defaults:
 
 output_model_name: lewm
 subdir: ${hydra:job.id}
+pretrained_path: /Volumes/BCKUP-Greg-MacBookPro/4MP/World_Models/.stable_wm/checkpoints/lewm-pusht/weights.pt
 
 num_workers: 6
 train_split: 0.9
@@ -15,9 +16,9 @@ dump_object: True
 
 trainer:
   max_epochs: 100
-  devices: auto
-  accelerator: gpu
-  precision: bf16
+  devices: 1
+  accelerator: mps
+  precision: 32
   gradient_clip_val: 1.0
 
 loader:
@@ -25,7 +26,7 @@ loader:
   num_workers: ${num_workers}
   persistent_workers: True
   prefetch_factor: 3
-  pin_memory: True
+  pin_memory: False
 
 optimizer:
   type: AdamW

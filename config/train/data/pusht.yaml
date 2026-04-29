@@ -1,4 +1,5 @@
 dataset:
+  cache_dir: /Volumes/BCKUP-Greg-MacBookPro/4MP/World_Models/.stable_wm/datasets
   num_steps: ${eval:'${wm.num_preds} + ${wm.history_size}'}
   frameskip: 5
   name: pusht_expert_train
