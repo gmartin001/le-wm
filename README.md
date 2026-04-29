@@ -33,8 +33,11 @@ This codebase builds on [stable-worldmodel](https://github.com/galilai-group/sta
 ```bash
 uv venv --python=3.10
 source .venv/bin/activate
-uv pip install stable-worldmodel[train,env]
+# Legacy `gym` sdists (transitive) need old setuptools in the sdist build; `-b` enforces that.
+# macOS: `brew install swig` so `box2d-py` (from `gymnasium[all]`) can compile.
+uv pip install "stable-worldmodel[train,env]" -b build-constraints.txt
 ```
+Add `-c constraints.txt` and `--overrides overrides.txt` if you use those project files.
 
 ## Data
 
