@@ -19,6 +19,7 @@ Usage:
 """
 
 import argparse
+from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 import h5py
@@ -419,7 +420,9 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    output = args.output or f"{args.dataset}_ep{args.episode}.gif"
+    gif_dir = Path(".stable_wm/datasets/GIFs")
+    gif_dir.mkdir(parents=True, exist_ok=True)
+    output = args.output or str(gif_dir / f"{args.dataset}_ep{args.episode}.gif")
     make_gif(args.dataset, args.episode, args.stride, output, args.duration)
 
 
