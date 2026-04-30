@@ -123,11 +123,18 @@ def run(cfg):
         pred_proj=predictor_proj,
     )
 
+    pretrained_path = cfg.get("pretrained_path")
+    if pretrained_path:
+        pretrained = torch.load(pretrained_path, map_location="cpu")
+        state_dict = pretrained.state_dict() if hasattr(pretrained, "state_dict") else pretrained
+        world_model.load_state_dict(state_dict)
+        print(f"Loaded pretrained weights from {pretrained_path}")
+
     optimizers = {
         'model_opt': {
             "modules": 'model',
             "optimizer": dict(cfg.optimizer),
-            "scheduler": {"type": "LinearWarmupCosineAnnealingLR"},
+            "scheduler": {"type": "CosineAnnealingLR", "T_max": cfg.trainer.max_epochs},
             "interval": "epoch",
         },
     }

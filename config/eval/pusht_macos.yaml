@@ -18,7 +18,8 @@ dataset:
     - state
 
 seed: 42
-device: cuda
+device: mps
+cache_dir: /Volumes/BCKUP-Greg-MacBookPro/4MP/World_Models/.stable_wm/datasets
 policy: random # ckpt name or random
 
 plan_config:
@@ -44,6 +45,6 @@ eval:
       args:
         goal_state:
           value: goal_state
-          
+
 output:
   filename: pusht_results.txt

@@ -58,17 +58,23 @@ Dataset names are specified without the `.h5` extension. For example, `config/tr
 
 `jepa.py` contains the PyTorch implementation of LeWM. Training is configured via [Hydra](https://hydra.cc/) config files under `config/train/`.
 
-Before training, set your WandB `entity` and `project` in `config/train/lewm.yaml`:
-```yaml
-wandb:
-  config:
-    entity: your_entity
-    project: your_project
+Two configs are provided — one for Linux (NVIDIA GPU) and one for macOS (Apple Silicon MPS):
+
+| Config | Accelerator | Batch size | Mixed precision |
+|:---|:---:|:---:|:---:|
+| `lewm.yaml` | CUDA (GPU) | 128 | bf16 |
+| `lewm_macos.yaml` | MPS | 32 | bf16-mixed |
+
+Before training, set your WandB `entity` and `project` in the relevant config file.
+
+**Linux:**
+```bash
+python train.py
 ```
 
-To launch training:
+**macOS:**
 ```bash
-python train.py data=pusht
+python train.py --config-name lewm_macos
 ```
 
 Checkpoints are saved to `$STABLEWM_HOME` upon completion.
@@ -77,14 +83,33 @@ For baseline scripts, see the stable-worldmodel [scripts](https://github.com/gal
 
 ## Planning
 
-Evaluation configs live under `config/eval/`. Set the `policy` field to the checkpoint path **relative to `$STABLEWM_HOME`**, without the `_object.ckpt` suffix:
+Evaluation configs live under `config/eval/`. Two configs are provided for Linux and macOS:
+
+**Linux:**
+```bash
+python eval.py policy=pusht/lewm
+```
+
+**macOS:**
+
+First, set `cache_dir` in `config/eval/pusht_macos.yaml` to the directory containing your `.h5` dataset files:
+```yaml
+cache_dir: /path/to/your/datasets
+```
+
+Then run:
+```bash
+python eval.py --config-name pusht_macos policy=pusht/lewm
+```
+
+Set the `policy` field to the checkpoint path **relative to `$STABLEWM_HOME`**, without the `_object.ckpt` suffix:
 
 ```bash
 # ✓ correct
-python eval.py --config-name=pusht.yaml policy=pusht/lewm
+python eval.py policy=pusht/lewm
 
 # ✗ incorrect
-python eval.py --config-name=pusht.yaml policy=pusht/lewm_object.ckpt
+python eval.py policy=pusht/lewm_object.ckpt
 ```
 
 ## Pretrained Checkpoints

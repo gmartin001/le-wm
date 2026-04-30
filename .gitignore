@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Training / eval outputs
+outputs/
+wandb/
+rollout_*.mp4
+pusht_results.txt
+
+# Environment snapshots
+environment*.json
+requirements_frozen*.txt
+build-constraints.txt
+constraints.txt
+overrides.txt
